@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KiddoApp - Learning and Fun, All in One!</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#BF092F",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221910",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        /* Simple RTL adjustments when language is Arabic */
+        html[dir="rtl"] .text-left { text-align: right !important; }
+        html[dir="rtl"] .text-right { text-align: left !important; }
+        html[dir="rtl"] .mx-auto { margin-left: auto !important; margin-right: auto !important; }
+        html[dir="rtl"] .md\:text-left { text-align: right !important; }
+
+        /* Smooth scroll and reduced motion */
+        html { scroll-behavior: smooth; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fadeInUp 600ms ease both; }
+
+        /* Small button hover/focus polish */
+        .btn-action { transition: transform .18s ease, box-shadow .18s ease; }
+        .btn-action:focus { outline: none; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+
+        /* Apply IBM Plex Arabic when in Arabic mode */
+        html[lang="ar"], html[dir="rtl"] { font-family: 'IBM Plex Sans Arabic', 'Spline Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+        /* Better focus-visible for keyboard users */
+        :focus-visible { box-shadow: 0 0 0 4px rgba(191,9,47,0.12); border-radius: 8px; }
+        /* Respect reduced motion for animations */
+        @media (prefers-reduced-motion: reduce) { .animate-fade-up { animation: none !important; opacity: 1 !important; transform: none !important; } }
+    </style>
+ 
+<meta name="description" content="KiddoApp — a gamified care system connecting parents, children and specialists. Smart nutrition, task schedules, rewards and expert guidance in one place.">
+<!-- Open Graph / Social preview -->
+<meta property="og:title" content="KiddoApp - Complete Care System" />
+<meta property="og:description" content="Smart nutrition, gamified tasks, verified specialists and family-focused tools to promote healthy growth." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#BF092F" />
+<link rel="icon" href="/favicon.ico" />
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+    <!-- Accessibility: skip to main content for keyboard users -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white/90 dark:bg-slate-900/90 text-sm px-3 py-2 rounded shadow z-50">Skip to content</a>
+
+    <!-- TopNavBar -->
+    <div class="px-4 md:px-10 lg:px-20 xl:px-40 flex justify-center sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<div class="layout-content-container flex flex-col w-full max-w-[960px] flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-black/10 dark:border-b-white/10 px-4 md:px-10 py-3">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] text-slate-900 dark:text-slate-100">KiddoApp</h2>
+    </div>
+    <div class="hidden md:flex items-center flex-1 justify-end gap-4">
+        <button id="btn-lang" class="px-3 py-1 rounded-full bg-white/10 text-sm text-slate-900 dark:text-slate-100" type="button" aria-label="Switch language">العربية</button>
+        <div class="hidden md:flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a data-i18n="nav.features" class="text-sm font-medium leading-normal text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-primary" href="#features">Features</a>
+</a>
+</div>
+<button id="btn-newsletter" class="flex btn-action min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:scale-105 focus:scale-105 focus:ring-2 focus:ring-primary/30" type="button" aria-controls="newsletter" aria-label="Go to newsletter signup">
+    <span class="truncate" data-i18n="btn.newsletter">Newsletter Signup</span>
+</button>
+</div>
+<div class="md:hidden">
+        <button id="btn-mobile-menu" class="p-2 rounded-full text-slate-900 dark:text-slate-100" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+</div>
+</header>
+<!-- Mobile nav overlay (hidden by default) -->
+<div id="mobile-nav" class="fixed inset-0 z-50 bg-white/95 dark:bg-[#090707]/95 hidden md:hidden" aria-hidden="true">
+    <div class="max-w-[960px] mx-auto p-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="size-6 text-primary">
+                    <svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path></svg>
+                </div>
+                <span class="font-bold">KiddoApp</span>
+            </div>
+            <button id="btn-mobile-close" class="p-2 rounded-full" aria-label="Close menu">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <nav class="mt-8 flex flex-col gap-4">
+            <a data-i18n="nav.features" class="text-lg font-medium" href="#features">Features</a>
+            <a data-i18n="nav.screenshots" class="text-lg font-medium" href="#screenshots">Screenshots</a>
+            <button id="mobile-newsletter" data-i18n="btn.newsletter" class="text-left text-lg font-bold bg-primary/10 px-4 py-3 rounded-full">Newsletter Signup</button>
+        </nav>
+    </div>
+</div>
+</div>
+</div>
+<main id="main-content" class="w-full max-w-[960px] mx-auto">
+<!-- HeroSection -->
+<section class="px-4 py-10 md:py-20">
+<div class="@container">
+<div class="flex flex-col-reverse gap-10 @[864px]:flex-row @[864px]:items-center">
+<div class="flex flex-col gap-6 text-center @[864px]:text-left @[864px]:w-1/2">
+<div class="flex flex-col gap-4">
+<h1 data-i18n="hero.title" data-animate class="text-4xl font-black leading-tight tracking-[-0.033em] text-slate-900 dark:text-white @[480px]:text-5xl">Learning and Fun, All in One!</h1>
+<h2 data-i18n="hero.subtitle" data-animate class="text-base font-normal leading-normal text-slate-700 dark:text-slate-300 @[480px]:text-lg">The new creative adventure app for ages 3-6. Spark your child's imagination today!</h2>
+</div>
+<a id="btn-play" data-animate class="flex btn-action min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:scale-105 focus:scale-105 focus:ring-2 focus:ring-primary/30 transition-colors w-full sm:w-auto mx-auto @[864px]:mx-0" href="https://play.google.com/store/apps" target="_blank" rel="noopener noreferrer" aria-label="Open Google Play store">
+    <span class="truncate" data-i18n="btn.play">Available on Google Play</span>
+</a>
+</div>
+<div class="w-full @[864px]:w-1/2">
+<img class="w-full h-auto aspect-video object-cover rounded-lg" data-alt="A cheerful cartoon illustration of animal characters playing with educational toys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPDWK1LVSvpPbp_sW4Dr-6-iTZ-IqL0FsDTg6BExhnzPpu68s0GDG0HW12By3sMzTOwVwO0Q4vUhcnHOEv1D52viqtbucrd4sDIBPvyJH6qBkomQEikHOnjXzs_XUDw1SIt7i-JzzEtI5wbqYRiJ6Wv0mE5oC7ebMSfdEwksuj7XgJMQfcr21McOjo6o6unQCGxKPuhxed9xQc7uG6Z05ZGdLWfsNXhMghw2UrguhqNsqDI6nHToiOzPiOKj2lBGXkmDodPypeAYUR"/>
+</div>
+</div>
+</div>
+</section>
+<!-- FeatureSection -->
+<section class="px-4 py-10 md:py-20" id="features">
+<div class="flex flex-col gap-10 @container">
+<div class="flex flex-col gap-4 text-center">
+<h2 data-i18n="features.title" class="text-3xl font-bold leading-tight tracking-[-0.015em] text-slate-900 dark:text-white @[480px]:text-4xl">A Complete Care System</h2>
+<p data-i18n="features.subtitle" class="text-base font-normal leading-normal text-slate-700 dark:text-slate-300 max-w-[720px] mx-auto">A comprehensive platform connecting parents, children, and healthcare specialists in a gamified environment focused on healthy development.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div data-animate class="flex flex-1 gap-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 p-4 flex-col text-left">
+<div class="text-primary"><span class="material-symbols-outlined">shield</span></div>
+<div class="flex flex-col gap-1">
+<h3 data-i18n="features.card1.title" class="text-base font-bold leading-tight text-slate-900 dark:text-white">Parent-Approved</h3>
+<p data-i18n="features.card1.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">A safe, curated environment you can trust.</p>
+</div>
+</div>
+<div data-animate class="flex flex-1 gap-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 p-4 flex-col text-left">
+<div class="text-primary"><span class="material-symbols-outlined">volume_off</span></div>
+<div class="flex flex-col gap-1">
+<h3 data-i18n="features.card2.title" class="text-base font-bold leading-tight text-slate-900 dark:text-white">Ad-Free Experience</h3>
+<p data-i18n="features.card2.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Zero interruptions, just pure, focused fun.</p>
+</div>
+</div>
+<div data-animate class="flex flex-1 gap-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 p-4 flex-col text-left">
+<div class="text-primary"><span class="material-symbols-outlined">extension</span></div>
+<div class="flex flex-col gap-1">
+<h3 data-i18n="features.card3.title" class="text-base font-bold leading-tight text-slate-900 dark:text-white">Educational Games</h3>
+<p data-i18n="features.card3.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Playful activities that teach letters, numbers, and more.</p>
+</div>
+</div>
+<div data-animate class="flex flex-1 gap-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-slate-800 p-4 flex-col text-left">
+<div class="text-primary"><span class="material-symbols-outlined">brush</span></div>
+<div class="flex flex-col gap-1">
+<h3 data-i18n="features.card4.title" class="text-base font-bold leading-tight text-slate-900 dark:text-white">Boosts Creativity</h3>
+<p data-i18n="features.card4.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Tools and games to unlock your child's inner artist.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- User Types Section -->
+<section class="px-4 py-10 md:py-20 bg-slate-50 dark:bg-slate-900/50" id="user-types">
+    <div class="max-w-[960px] mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Parents Section -->
+            <div data-animate class="flex flex-col gap-6 p-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                <div class="text-primary">
+                    <span class="material-symbols-outlined text-3xl">family_restroom</span>
+                </div>
+                <div>
+                    <h3 data-i18n="users.parents.title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">For Parents</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">restaurant</span>
+                            <span data-i18n="users.parents.feature1">Smart Nutrition Schedule with AI-suggested meals</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">task</span>
+                            <span data-i18n="users.parents.feature2">Child Task Management & Todo Lists</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">monitoring</span>
+                            <span data-i18n="users.parents.feature3">Behavior Tracking & Emotional Guidance</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">vaccines</span>
+                            <span data-i18n="users.parents.feature4">Vaccination Schedules & Health Tools</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Children Section -->
+            <div data-animate class="flex flex-col gap-6 p-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                <div class="text-primary">
+                    <span class="material-symbols-outlined text-3xl">child_care</span>
+                </div>
+                <div>
+                    <h3 data-i18n="users.children.title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">For Children</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">stars</span>
+                            <span data-i18n="users.children.feature1">Fun Task Schedule with Instant Rewards</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">redeem</span>
+                            <span data-i18n="users.children.feature2">Choose Your Own Rewards</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">sports_esports</span>
+                            <span data-i18n="users.children.feature3">Life Skills Games & Activities</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">mood</span>
+                            <span data-i18n="users.children.feature4">Express Feelings & Thoughts</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Specialists Section -->
+            <div data-animate class="flex flex-col gap-6 p-6 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                <div class="text-primary">
+                    <span class="material-symbols-outlined text-3xl">medical_services</span>
+                </div>
+                <div>
+                    <h3 data-i18n="users.doctors.title" class="text-xl font-bold text-slate-900 dark:text-white mb-3">For Specialists</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">verified</span>
+                            <span data-i18n="users.doctors.feature1">Verified Professional Profile</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">calendar_month</span>
+                            <span data-i18n="users.doctors.feature2">Flexible Consultation Scheduling</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">groups</span>
+                            <span data-i18n="users.doctors.feature3">Join Expert Community</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300">
+                            <span class="material-symbols-outlined text-primary shrink-0">computer</span>
+                            <span data-i18n="users.doctors.feature4">Online & In-Person Consultations</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SectionHeader + Carousel -->
+<section class="py-10 md:py-20" id="screenshots">
+<h2 data-i18n="screenshots.title" class="text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-5 pt-5 text-slate-900 dark:text-white text-center">Take a Peek Inside!</h2>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch p-4 gap-4">
+<div data-animate class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60 md:min-w-72">
+<img class="w-full aspect-[4/3] object-cover rounded-lg" data-alt="Screenshot of an alphabet tracing game within the app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlBpbmtuo_PMDWVTudr51qUF6ao2lI9i514pPCsBee9lYU0Zi7Vx-lXsvTpVi9teiKuN1tad0OzjQrMHXcB97z-mReKL8lOsIRxm0qLD69GcaSWASikcTXv8p0ISAuC9BOborje3e_8T2olZ68IFSzWZ00H6CNBCT8bNIW_K6aQgmL3vFyeRRDrs9tHZfVh841qKxrtRUsZd7REleDkGXuTejHqKQIt337CxoIRo9cxTtSVgNxn6kS_krMJ57Jr1E8pQOpgyDzl-pe"/>
+<div>
+<p data-i18n="screenshots.card1.title" class="text-base font-medium leading-normal text-slate-900 dark:text-white">Learn the Alphabet</p>
+<p data-i18n="screenshots.card1.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Trace letters and numbers with fun guides.</p>
+</div>
+</div>
+<div data-animate class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60 md:min-w-72">
+<img class="w-full aspect-[4/3] object-cover rounded-lg" data-alt="Screenshot showcasing the app's friendly animal characters." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6xlBzlMLX1gH5-14tANU_VNGw6YE0pVCwek95fa308VqUhiUQfchWBENMiFRBDz-j1_3IdgAnG7TM8OoCjWSAEmk3FxIvA4J2EFJqWxymKhmQkcx2KYzTaAzj2WO7K086gYqS-5eAWuVWEKEYHipEN3v3kOxaBys4dgalJIQ55ULfGxDAYL9AXJzoRo7tVh24iKgBtDKcQnjykqFFK8M-zogi51-M_ylsTzx3OR67GSMGDe1IyxdSVLNDBoBmSVepu5cHHYviOl2M"/>
+<div>
+<p data-i18n="screenshots.card2.title" class="text-base font-medium leading-normal text-slate-900 dark:text-white">Meet the Characters</p>
+<p data-i18n="screenshots.card2.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Explore the world with our friendly animal pals.</p>
+</div>
+</div>
+<div data-animate class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60 md:min-w-72">
+<img class="w-full aspect-[4/3] object-cover rounded-lg" data-alt="Screenshot of a colorful puzzle game for kids." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzWiQg3w7Eg47CaYOtU3QDyl2ZsrhpBBEfc2VfvZZxQ5Hqlv5dvGHS1Las3WNh3KIAOOUtqrbj6L5i3avxdg5G8QEVmspqteBN5WH6upqIqBQeTnrcMweiQpvNE_T8zF98MetAVpEbstRII6GeZLefTdZOMXwG1IuSCkDLB3Y6JSiyN7T4h9Ef1zMK9fFTjkB9URVqUS22MIkZC5CnCb4jjEagwMQin44GySIkOFThxYRqbmvUQ9qazXR00xjbC6h9-ZM6oAyBXcho"/>
+<div>
+<p data-i18n="screenshots.card3.title" class="text-base font-medium leading-normal text-slate-900 dark:text-white">Solve Fun Puzzles</p>
+<p data-i18n="screenshots.card3.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Develop problem-solving skills.</p>
+</div>
+</div>
+<div data-animate class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60 md:min-w-72">
+<img class="w-full aspect-[4/3] object-cover rounded-lg" data-alt="Screenshot of a digital drawing and coloring activity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSzWMPNUwDKZSeP7AiF8YrCtIbLBklVEDnL3EQaHLvnndvkvVNGYeagbrhU53ORKp5_Ilv3eY1lC7Csy7JapR9UDoIwCeicXJXPpkhZS4gBVMZA-wSrY72v4UyElFTnlCb5h1cEhiQ6oXN0CVXPhvz8HG4Ei22WC28CWB_nhnIkpzq6KZjBBuBHos5_SjIPpJi6HpWfpqX2CH0eiFWuPl6PvFh6mbFDtv00H8ZOM8-vsDGMgOhLEYVL19yt-IRpyCfA9D028SJWXxw"/>
+<div>
+<p data-i18n="screenshots.card4.title" class="text-base font-medium leading-normal text-slate-900 dark:text-white">Unleash Creativity</p>
+<p data-i18n="screenshots.card4.desc" class="text-sm font-normal leading-normal text-slate-600 dark:text-slate-400">Color, draw, and make your own masterpieces.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Signup Section -->
+<section id="newsletter" data-animate class="px-4 py-10 md:py-20">
+<div class="bg-primary/20 dark:bg-primary/10 rounded-lg p-8 md:p-12 text-center">
+<div class="max-w-xl mx-auto flex flex-col items-center gap-4">
+<h2 data-i18n="newsletter.title" class="text-3xl font-bold text-slate-900 dark:text-white">Join Our Family!</h2>
+<p data-i18n="newsletter.subtitle" class="text-base text-slate-700 dark:text-slate-300">Sign up for our newsletter to get updates, fun activities, and exclusive tips delivered right to your inbox.</p>
+<form id="newsletter-form" class="w-full mt-4 flex flex-col sm:flex-row gap-2">
+    <input id="newsletter-email" data-i18n-placeholder="newsletter.placeholder" class="w-full px-4 py-3 rounded-full border-slate-300 dark:border-slate-600 bg-background-light dark:bg-background-dark text-slate-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="Enter your email" type="email" aria-label="Email address" required/>
+    <button id="newsletter-submit" data-i18n="newsletter.submit" class="flex-shrink-0 btn-action flex items-center justify-center rounded-full h-12 px-6 bg-primary text-white text-base font-bold hover:scale-105 focus:scale-105 focus:ring-2 focus:ring-primary/30" type="submit">
+        Subscribe
+    </button>
+</form>
+<div id="newsletter-feedback" class="mt-3 text-sm text-slate-700 dark:text-slate-300 hidden" role="status" aria-live="polite"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer data-animate class="w-full bg-slate-100 dark:bg-slate-900 mt-20">
+<div class="max-w-[960px] mx-auto px-4 sm:px-10 py-12">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<span class="font-bold">KiddoApp</span>
+</div>
+<div class="flex gap-6 text-slate-600 dark:text-slate-400">
+    <a id="link-privacy" data-i18n="footer.privacy" class="hover:text-primary" href="#privacy">Privacy Policy</a>
+    <a id="link-contact" data-i18n="footer.contact" class="hover:text-primary" href="mailto:support@kiddoapp.example">Contact Us</a>
+</div>
+<div class="flex gap-4">
+<!-- Social media icons would go here -->
+</div>
+</div>
+<div class="text-center text-sm text-slate-500 dark:text-slate-500 mt-8 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <span data-i18n="footer.copyright">© 2024 KiddoApp. All rights reserved.</span>
+</div>
+</div>
+</footer>
+</div>
+<!-- Quick Todo floating action + modal -->
+<div id="quick-todo-fab" class="fixed bottom-6 right-6 z-60">
+    <button id="qt-open" aria-haspopup="dialog" aria-controls="qt-modal" class="flex items-center gap-2 px-4 py-3 rounded-full bg-primary text-white shadow-lg hover:scale-105 focus:scale-105 focus:ring-2 focus:ring-primary/30 btn-action" title="Quick Todo">
+        <span class="material-symbols-outlined">task_alt</span>
+        <span id="qt-count" class="text-sm font-semibold">0</span>
+    </button>
+
+    <div id="qt-modal" role="dialog" aria-modal="true" aria-hidden="true" class="hidden mt-2 w-80 bg-white dark:bg-slate-800 rounded-lg shadow-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+            <strong id="qt-title" class="text-sm" data-i18n="quicktodo.title">Quick Todo</strong>
+            <button id="qt-close" class="p-1 rounded text-slate-600 dark:text-slate-300" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <form id="qt-form" class="flex gap-2">
+            <input id="qt-input" data-i18n-placeholder="quicktodo.placeholder" class="flex-1 px-3 py-2 rounded-full border border-slate-200 dark:border-slate-700 bg-background-light dark:bg-background-dark text-sm" placeholder="Add quick task" aria-label="Add quick task" />
+            <button id="qt-add" data-i18n="quicktodo.add" class="px-3 py-2 rounded-full bg-primary text-white text-sm" type="submit">Add</button>
+        </form>
+    <span class="sr-only" data-i18n="quicktodo.empty">No quick tasks yet</span>
+    <ul id="qt-list" class="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-300"></ul>
+    </div>
+</div>
+
+<!-- Privacy modal -->
+<div id="modal-privacy" class="fixed inset-0 z-60 flex items-center justify-center bg-black/50 hidden" aria-hidden="true">
+    <div class="bg-white dark:bg-slate-900 max-w-md w-full rounded-lg p-6 mx-4">
+        <div class="flex justify-between items-start">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Privacy Policy</h3>
+            <button id="modal-privacy-close" class="p-1 rounded" aria-label="Close privacy modal"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="mt-4 text-sm text-slate-700 dark:text-slate-300">
+            <p>We respect your privacy. This is a placeholder privacy summary — replace with your real policy content.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Image modal for screenshots -->
+<div id="modal-image" class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 hidden" aria-hidden="true">
+    <div class="max-w-3xl w-full mx-4">
+        <div class="bg-white dark:bg-slate-900 rounded-lg overflow-hidden">
+            <div class="flex justify-end p-2">
+                <button id="modal-image-close" class="p-1 rounded" aria-label="Close image modal"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <img id="modal-image-img" class="w-full h-auto object-contain bg-black" src="" alt=""/>
+            <div id="modal-image-caption" class="p-4 text-sm text-slate-700 dark:text-slate-300"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Behavior wiring + lightweight i18n (English / Arabic)
+(function(){
+    const qs = (s, root = document) => root.querySelector(s);
+    const qsa = (s, root = document) => Array.from((root || document).querySelectorAll(s));
+
+    // Translation catalog
+    const translations = {
+        en: {
+            title: 'KiddoApp - Complete Care System',
+            'nav.features': 'Features',
+            'nav.screenshots': 'Screenshots',
+            'btn.newsletter': 'Newsletter Signup',
+            'hero.title': 'Learning and Fun, All in One!',
+            'hero.subtitle': "The new creative adventure app for ages 3-6. Spark your child's imagination today!",
+            'btn.play': 'Available on Google Play',
+            'features.title': 'Why Parents and Kids Love Us',
+            'features.subtitle': "We've designed every part of our app to be safe, engaging, and beneficial for early development.",
+            'features.card1.title': 'Parent-Approved',
+            'features.card1.desc': 'A safe, curated environment you can trust.',
+            'features.card2.title': 'Ad-Free Experience',
+            'features.card2.desc': 'Zero interruptions, just pure, focused fun.',
+            'features.card3.title': 'Educational Games',
+            'features.card3.desc': 'Playful activities that teach letters, numbers, and more.',
+            'features.card4.title': 'Boosts Creativity',
+            'features.card4.desc': "Tools and games to unlock your child's inner artist.",
+            'screenshots.title': 'Take a Peek Inside!',
+            'screenshots.card1.title': 'Learn the Alphabet',
+            'screenshots.card1.desc': 'Trace letters and numbers with fun guides.',
+            'screenshots.card2.title': 'Meet the Characters',
+            'screenshots.card2.desc': "Explore the world with our friendly animal pals.",
+            'screenshots.card3.title': 'Solve Fun Puzzles',
+            'screenshots.card3.desc': 'Develop problem-solving skills.',
+            'screenshots.card4.title': 'Unleash Creativity',
+            'screenshots.card4.desc': 'Color, draw, and make your own masterpieces.',
+            'newsletter.title': 'Join Our Family!',
+            'newsletter.subtitle': 'Sign up for our newsletter to get updates, fun activities, and exclusive tips delivered right to your inbox.',
+            'newsletter.placeholder': 'Enter your email',
+            'newsletter.submit': 'Subscribe',
+            'newsletter.invalid': 'Please enter a valid email address.',
+            'newsletter.success': 'Thanks — check your inbox for a welcome message! (This is a demo.)',
+            'footer.privacy': 'Privacy Policy',
+            'footer.contact': 'Contact Us',
+            'footer.copyright': '© 2024 KiddoApp. All rights reserved.',
+            'users.parents.title': 'For Parents',
+            'users.parents.feature1': 'Smart Nutrition Schedule with AI-suggested meals',
+            'users.parents.feature2': 'Child Task Management & Todo Lists',
+            'users.parents.feature3': 'Behavior Tracking & Emotional Guidance',
+            'users.parents.feature4': 'Vaccination Schedules & Health Tools',
+            'users.children.title': 'For Children',
+            'users.children.feature1': 'Fun Task Schedule with Instant Rewards',
+            'users.children.feature2': 'Choose Your Own Rewards',
+            'users.children.feature3': 'Life Skills Games & Activities',
+            'users.children.feature4': 'Express Feelings & Thoughts',
+            'users.doctors.title': 'For Specialists',
+            'users.doctors.feature1': 'Verified Professional Profile',
+            'users.doctors.feature2': 'Flexible Consultation Scheduling',
+            'users.doctors.feature3': 'Join Expert Community',
+            'users.doctors.feature4': 'Online & In-Person Consultations',
+            'quicktodo.title': 'Quick Todo',
+            'quicktodo.placeholder': 'Add quick task',
+            'quicktodo.add': 'Add',
+            'quicktodo.empty': 'No quick tasks yet',
+            'quicktodo.count_label': 'Quick tasks'
+        },
+        ar: {
+            title: 'كيدو آب - التعلم والمرح في تطبيق واحد',
+            'nav.features': 'الميزات',
+            'nav.screenshots': 'لقطات الشاشة',
+            'btn.newsletter': 'اشترك',
+            'hero.title': 'التعلم والمرح، كل شيء في تطبيق واحد!',
+            'hero.subtitle': 'تطبيق المغامرة الإبداعية للأطفال من 3 إلى 6 سنوات. أشعل خيال طفلك اليوم!',
+            'btn.play': 'متوفر على متجر Google Play',
+            'features.title': 'لماذا يحبنا الآباء والأطفال',
+            'features.subtitle': 'صممنا كل جزء من تطبيقنا ليكون آمنًا وجذابًا ومفيدًا لتنمية الطفل المبكرة.',
+            'features.card1.title': 'موثوق من الأهل',
+            'features.card1.desc': 'بيئة آمنة ومنسقة يمكنك الوثوق بها.',
+            'features.card2.title': 'خالية من الإعلانات',
+            'features.card2.desc': 'بدون مقاطعات، مجرد متعة مركزة.',
+            'features.card3.title': 'ألعاب تعليمية',
+            'features.card3.desc': 'أنشطة مرحة لتعليم الحروف والأرقام والمزيد.',
+            'features.card4.title': 'تعزز الإبداع',
+            'features.card4.desc': 'أدوات وألعاب لإطلاق العنان لفنان طفلك الداخلي.',
+            'screenshots.title': 'إطلالة داخل التطبيق!',
+            'screenshots.card1.title': 'تعلم الحروف',
+            'screenshots.card1.desc': 'تتبع الحروف والأرقام مع أدلة ممتعة.',
+            'screenshots.card2.title': 'تعرف على الشخصيات',
+            'screenshots.card2.desc': 'استكشف العالم مع أصدقاءنا من الحيوانات.',
+            'screenshots.card3.title': 'حل الألغاز الممتعة',
+            'screenshots.card3.desc': 'طور مهارات حل المشكلات.',
+            'screenshots.card4.title': 'حرر الإبداع',
+            'screenshots.card4.desc': 'ارسم، لون، واصنع تحفك الخاصة.',
+            'newsletter.title': 'انضم إلى عائلتنا!',
+            'newsletter.subtitle': 'اشترك لتصلك التحديثات والأنشطة والنصائح الحصرية إلى بريدك.',
+            'newsletter.placeholder': 'أدخل بريدك الإلكتروني',
+            'newsletter.submit': 'اشترك',
+            'newsletter.invalid': 'الرجاء إدخال بريد إلكتروني صحيح.',
+            'newsletter.success': 'شكرًا — تحقق من بريدك الوارد! (هذه تجربة توضيحية.)',
+            'footer.privacy': 'سياسة الخصوصية',
+            'footer.contact': 'اتصل بنا',
+            'footer.copyright': '© 2024 KiddoApp. كل الحقوق محفوظة.',
+            'users.parents.title': 'للوالدين',
+            'users.parents.feature1': 'جدول تغذية ذكي مع وجبات مقترحة بالذكاء الاصطناعي',
+            'users.parents.feature2': 'إدارة مهام الطفل وقوائم المهام',
+            'users.parents.feature3': 'تتبع السلوك والتوجيه العاطفي',
+            'users.parents.feature4': 'جداول التطعيم وأدوات الصحة',
+            'users.children.title': 'للأطفال',
+            'users.children.feature1': 'جدول مهام ممتع مع مكافآت فورية',
+            'users.children.feature2': 'اختر مكافآتك بنفسك',
+            'users.children.feature3': 'ألعاب ونشاطات مهارات الحياة',
+            'users.children.feature4': 'التعبير عن المشاعر والأفكار',
+            'users.doctors.title': 'للمتخصصين',
+            'users.doctors.feature1': 'ملف مهني موثق',
+            'users.doctors.feature2': 'جدولة استشارات مرنة',
+            'users.doctors.feature3': 'انضم لمجتمع الخبراء',
+            'users.doctors.feature4': 'استشارات عبر الإنترنت وشخصية',
+            'quicktodo.title': 'إضافة سريعة',
+            'quicktodo.placeholder': 'أضف مهمة قصيرة',
+            'quicktodo.add': 'أضف',
+            'quicktodo.empty': 'لا توجد مهام',
+            'quicktodo.count_label': 'مهام سريعة'
+        }
+    };
+
+    // Elements (common)
+    const btnLang = qs('#btn-lang');
+    const btnNewsletter = qs('#btn-newsletter');
+    const btnPlay = qs('#btn-play');
+    const btnMobile = qs('#btn-mobile-menu');
+    const mobileNav = qs('#mobile-nav');
+    const btnMobileClose = qs('#btn-mobile-close');
+    const mobileNewsletter = qs('#mobile-newsletter');
+
+    const newsletterSection = qs('#newsletter');
+    const newsletterForm = qs('#newsletter-form');
+    const newsletterEmail = qs('#newsletter-email');
+    const newsletterSubmit = qs('#newsletter-submit');
+    const newsletterFeedback = qs('#newsletter-feedback');
+
+    const linkPrivacy = qs('#link-privacy');
+    const modalPrivacy = qs('#modal-privacy');
+    const modalPrivacyClose = qs('#modal-privacy-close');
+
+    const modalImage = qs('#modal-image');
+    const modalImageImg = qs('#modal-image-img');
+    const modalImageCaption = qs('#modal-image-caption');
+    const modalImageClose = qs('#modal-image-close');
+
+    // Helper to show/hide
+    function show(el){ if(!el) return; el.classList.remove('hidden'); el.setAttribute('aria-hidden', 'false'); }
+    function hide(el){ if(!el) return; el.classList.add('hidden'); el.setAttribute('aria-hidden', 'true'); }
+
+    // i18n apply
+    function applyTranslations(lang){
+        const map = translations[lang] || translations.en;
+        // document title
+        document.title = map.title || document.title;
+        // set dir/lang
+        document.documentElement.lang = (lang === 'ar') ? 'ar' : 'en';
+        document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        // apply IBM Plex Arabic font when in Arabic mode; clear inline override when switching back
+        if(lang === 'ar'){
+            document.documentElement.style.fontFamily = "'IBM Plex Sans Arabic', 'Spline Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";
+        } else {
+            document.documentElement.style.fontFamily = '';
+        }
+
+        // update elements with data-i18n
+        qsa('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if(!key) return;
+            const txt = map[key];
+            if(txt !== undefined){
+                el.textContent = txt;
+            }
+        });
+
+        // update placeholders
+        qsa('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            const txt = map[key];
+            if(txt !== undefined){ el.placeholder = txt; }
+        });
+
+        // Update any alt text from translations if present (optional keys)
+        // e.g. data-i18n-alt="screenshots.card1.alt"
+        qsa('[data-i18n-alt]').forEach(img => {
+            const key = img.getAttribute('data-i18n-alt');
+            const txt = map[key];
+            if(txt !== undefined){ img.alt = txt; }
+        });
+
+        // update language toggle label (show target language name)
+        if(btnLang){ btnLang.textContent = (lang === 'ar') ? 'English' : 'العربية'; }
+    }
+
+    // Language persistence
+    const stored = localStorage.getItem('siteLang') || 'en';
+    let lang = stored === 'ar' ? 'ar' : 'en';
+    applyTranslations(lang);
+
+    // Language toggle button
+    if(btnLang){
+        btnLang.addEventListener('click', ()=>{
+            lang = (lang === 'en') ? 'ar' : 'en';
+            localStorage.setItem('siteLang', lang);
+            applyTranslations(lang);
+            // small visual focus
+            setTimeout(()=> document.activeElement.blur(), 200);
+        });
+    }
+
+    // Scroll to newsletter
+    if(btnNewsletter){
+        btnNewsletter.addEventListener('click', () => {
+            if(newsletterSection){
+                newsletterSection.scrollIntoView({behavior: 'smooth', block: 'center'});
+                setTimeout(()=> newsletterEmail && newsletterEmail.focus(), 600);
+            }
+        });
+    }
+
+    // Mobile nav open/close
+    if(btnMobile && mobileNav){
+        btnMobile.addEventListener('click', () => {
+            show(mobileNav);
+            btnMobile.setAttribute('aria-expanded', 'true');
+        });
+    }
+    if(btnMobileClose && mobileNav){
+        btnMobileClose.addEventListener('click', () => {
+            hide(mobileNav);
+            btnMobile && btnMobile.setAttribute('aria-expanded', 'false');
+        });
+    }
+    if(mobileNewsletter){
+        mobileNewsletter.addEventListener('click', () => {
+            hide(mobileNav);
+            btnMobile && btnMobile.setAttribute('aria-expanded', 'false');
+            newsletterSection && newsletterSection.scrollIntoView({behavior: 'smooth', block: 'center'});
+            setTimeout(()=> newsletterEmail && newsletterEmail.focus(), 600);
+        });
+    }
+
+    // Newsletter submit
+    if(newsletterForm){
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = (newsletterEmail && newsletterEmail.value || '').trim();
+            const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if(!valid){
+                const msg = translations[lang]['newsletter.invalid'] || translations.en['newsletter.invalid'];
+                newsletterFeedback.textContent = msg;
+                newsletterFeedback.classList.remove('hidden');
+                newsletterFeedback.classList.remove('text-green-700');
+                newsletterFeedback.classList.add('text-red-600');
+                return;
+            }
+            // Simulate submit
+            newsletterSubmit.disabled = true;
+            const originalText = newsletterSubmit.textContent;
+            newsletterSubmit.textContent = translations[lang]['newsletter.sending'] || 'Sending...';
+            newsletterFeedback.classList.add('hidden');
+            setTimeout(()=>{
+                newsletterSubmit.disabled = false;
+                newsletterSubmit.textContent = originalText;
+                newsletterFeedback.classList.remove('hidden');
+                newsletterFeedback.classList.remove('text-red-600');
+                newsletterFeedback.classList.add('text-green-700');
+                newsletterFeedback.textContent = translations[lang]['newsletter.success'] || translations.en['newsletter.success'];
+                newsletterEmail.value = '';
+            }, 900);
+        });
+    }
+
+    // Privacy modal
+    if(linkPrivacy && modalPrivacy){
+        linkPrivacy.addEventListener('click', (e) => {
+            e.preventDefault();
+            show(modalPrivacy);
+        });
+    }
+    if(modalPrivacyClose){ modalPrivacyClose.addEventListener('click', ()=> hide(modalPrivacy)); }
+
+    // Screenshot image click -> open modal
+    const screenshots = qsa('#screenshots img');
+    screenshots.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', ()=>{
+            modalImageImg.src = img.src;
+            modalImageImg.alt = img.getAttribute('data-alt') || img.alt || 'Screenshot';
+            const captionEl = img.parentElement && img.parentElement.querySelector('p');
+            modalImageCaption.textContent = captionEl ? captionEl.textContent : '';
+            show(modalImage);
+        });
+    });
+    if(modalImageClose) modalImageClose.addEventListener('click', ()=> hide(modalImage));
+
+    // Close modals on ESC
+    document.addEventListener('keydown', (ev)=>{
+        if(ev.key === 'Escape'){
+            [modalPrivacy, modalImage, mobileNav].forEach(m=> m && !m.classList.contains('hidden') && hide(m));
+        }
+    });
+
+    // Accessibility: click outside modal to close
+    [modalPrivacy, modalImage].forEach(m => {
+        if(!m) return;
+        m.addEventListener('click', (e)=>{
+            if(e.target === m) hide(m);
+        });
+    });
+
+    // Play button tracking (href will open by default)
+    if(btnPlay){
+        btnPlay.addEventListener('click', ()=> console.log('Opening Play Store'));
+    }
+
+    // Reveal-on-scroll for elements with [data-animate]
+    try{
+        const revealEls = qsa('[data-animate]');
+        if(revealEls.length){
+            const io = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting){
+                        const el = entry.target;
+                        // slight stagger using index if desired
+                        el.classList.add('animate-fade-up');
+                        obs.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            revealEls.forEach((el, idx) => {
+                // hide initially to avoid flash
+                el.style.opacity = 0;
+                // optional stagger
+                if(idx){ el.style.animationDelay = (idx * 80) + 'ms'; }
+                io.observe(el);
+            });
+        }
+    }catch(e){ console.warn('reveal observer error', e); }
+
+})();
+</script>
+
+<script>
+// Quick Todo widget (localStorage-backed, independent small UI)
+(function(){
+    const qs = (s, root = document) => (root || document).querySelector(s);
+    const qtOpen = qs('#qt-open');
+    const qtModal = qs('#qt-modal');
+    const qtClose = qs('#qt-close');
+    const qtForm = qs('#qt-form');
+    const qtInput = qs('#qt-input');
+    const qtList = qs('#qt-list');
+    const qtCount = qs('#qt-count');
+    if(!qtOpen || !qtModal) return;
+
+    function safeParse(v){ try{ return JSON.parse(v||'[]'); }catch(e){ return []; } }
+    function loadTodos(){ return safeParse(localStorage.getItem('quickTodos')); }
+    function saveTodos(t){ localStorage.setItem('quickTodos', JSON.stringify(t)); }
+    function escapeHtml(s){ return String(s).replace(/[&<>"'`]/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'})[c]; }); }
+
+    function updateCount(){ const t = loadTodos(); qtCount.textContent = t.length; }
+
+    function render(){
+        const tasks = loadTodos();
+        qtList.innerHTML = '';
+        if(!tasks.length){
+            const li = document.createElement('li');
+            li.className = 'text-sm text-slate-500 dark:text-slate-400';
+            // If translation exists in DOM it will have been applied by the page i18n
+            const emptyEl = document.querySelector('[data-i18n="quicktodo.empty"]');
+            li.textContent = emptyEl ? emptyEl.textContent : 'No quick tasks yet';
+            qtList.appendChild(li);
+        } else {
+            tasks.forEach((t, i)=>{
+                const li = document.createElement('li');
+                li.className = 'flex items-center justify-between gap-2';
+                const span = document.createElement('span');
+                span.className = 'truncate';
+                span.textContent = t;
+                const btn = document.createElement('button');
+                btn.className = 'text-sm text-primary px-2 py-1 rounded';
+                btn.setAttribute('aria-label','Remove quick task');
+                btn.textContent = 'Remove';
+                btn.addEventListener('click', ()=>{
+                    const tasksNow = loadTodos();
+                    tasksNow.splice(i,1);
+                    saveTodos(tasksNow);
+                    render();
+                    updateCount();
+                });
+                li.appendChild(span);
+                li.appendChild(btn);
+                qtList.appendChild(li);
+            });
+        }
+        updateCount();
+    }
+
+    function showModal(){ qtModal.classList.remove('hidden'); qtModal.setAttribute('aria-hidden','false'); qtInput && qtInput.focus(); }
+    function hideModal(){ qtModal.classList.add('hidden'); qtModal.setAttribute('aria-hidden','true'); qtOpen && qtOpen.focus(); }
+
+    qtOpen.addEventListener('click', ()=>{ if(qtModal.classList.contains('hidden')) showModal(); else hideModal(); });
+    qtClose && qtClose.addEventListener('click', hideModal);
+
+    qtForm && qtForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const v = (qtInput && qtInput.value || '').trim();
+        if(!v) return;
+        const todos = loadTodos();
+        todos.unshift(v);
+        saveTodos(todos);
+        qtInput.value = '';
+        render();
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (ev)=>{
+        if(!qtModal.classList.contains('hidden')){
+            if(!qtModal.contains(ev.target) && !qtOpen.contains(ev.target)) hideModal();
+        }
+    });
+    document.addEventListener('keydown', (ev)=>{ if(ev.key === 'Escape' && !qtModal.classList.contains('hidden')) hideModal(); });
+
+    // initial render
+    render();
+})();
+</script>
+
+</body></html>
